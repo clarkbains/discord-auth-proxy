@@ -1,0 +1,32 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>Active Torrents</title>
+  <style>
+  .status-bar {
+	  width:100%;
+	  height: 5px;
+  }
+  </style>
+</head>
+<body>
+	<div id="body">
+	</div>
+	<div id="status-bar" class="status-bar"></div>
+	<p>The above bar flashes green on every update from the server </p>
+ </body>
+ <script>
+	async function get(){
+		document.getElementById("status-bar").style.background="lime"
+		let r = await fetch("/stats")
+		document.getElementById("body").innerHTML = await r.text()
+		setTimeout(()=>{
+			document.getElementById("status-bar").style.background="black"
+			},100)
+	}
+	get()
+	setInterval(get, 2000)
+	
+ </script>
+</html>

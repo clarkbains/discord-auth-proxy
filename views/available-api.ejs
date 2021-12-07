@@ -1,0 +1,58 @@
+<div style="margin:5px;">
+  <% if (torrents.length>0) {%>
+
+  <h1>Active Torrents: </h1>
+  <!--<h5><%=new Date()%></h5>-->
+  <br>
+  <table style="word-wrap: break-word" class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Downloaded</th>
+        <th>Size</th>
+        <th>Percent Done</th>
+        <th>ETA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let torrent of torrents ) { %>
+      <tr>
+        <td><%= torrent.name %></td>
+        <td><%= ((torrent.sizeWhenDone-torrent.leftUntilDone)/(1024*1024)).toFixed(2)%> MiB </td>
+        <td><%= (torrent.sizeWhenDone/(1024*1024)).toFixed(2) %> MiB</td>
+        <td><%= (torrent.percentDone*100).toFixed(2)%>%</td>
+        <td><%= torrent.eta < (60*30)?`${(torrent.eta/60).toFixed(2)} m`:((torrent.eta/3600)<72?`${(torrent.eta/3600).toFixed(2)} h`:"Over 3 Days") %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <% } else { %>
+  <h4>No Torrents are being downloaded at the time.</h4>
+  <% } %>
+  <hr>
+  <% if (sync.length > 0 && local) { %>
+  <h3>Active uploads to the cloud in the: <%= sync.join(",")%> folder(s) </h3>
+
+  <% for (let file of local ) { %>
+
+  <% } %>
+  <% } else { %>
+  <h4>No files being uploaded to the cloud at this time </h4>
+  <% } %>
+
+  <% if (local.length > 0) { %>
+  <hr>
+  <h3>Pending <em>or</em> Active Uploads </h3>
+  <ul>
+    <% for (let file of local ) { %>
+    <li><%=file%></li>
+    <% } %>
+  </ul>
+  <% } %>
+
+  <hr>
+  <p>Note that very high ETAs may show if there are few seeders, or if the torrent has just started. <br>
+    After torrent finishes downloading, it will show up in the pending/active uploads. It will then be uploaded, and you will see text indicating that there is an active upload <br>
+    When uploading to cloud storage, it typically takes about 2min/1024MiB, and then Emby must scan the library. This happens at least every 15 minutes.
+  <p>
+</div>
