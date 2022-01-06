@@ -41,7 +41,7 @@ app "discord-auth-proxy" {
 
   deploy {
     use "nomad-jobspec" {
-      jobspec = templatefile("${path.app}/app.nomad.tpl")
+      jobspec = templatefile("/data/auth-proxy.nomad.tpl")
     }
   }
 }
