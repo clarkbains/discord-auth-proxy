@@ -28,7 +28,6 @@ app "discord-auth-proxy" {
   build {
     use "pack" { 
        #disable_entrypoint = true
-
      }
     registry {
       use "docker" {

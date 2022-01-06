@@ -103,13 +103,16 @@ app.get('/verify/:server', async (req,res)=>{
 
 
 app.set('view-engine', 'ejs')
-console.log("Init!")
+console.log("Init! ")
 
 
 app.get('/health', (req,res)=>{
     res.status(200).end()
 })
 
+app.get('/boot-time', (req,res)=>{
+	res.send(new Date())
+})
 app.get('/callback', async (req,res)=>{
     const { code, state } = req.query;
 	if (code) {
