@@ -1,18 +1,21 @@
 job "discord-auth-proxy" {
   datacenters = ["cwdc"]
   group "server" {
+    count = 1
+
     network {
       port  "http"{
-        to = 8888
+        static = 8888
       }
     }
+
     service {
-      name = "UI"
+      name = "auth-proxy-frontend"
       port = "http"
 
       tags = [
         "traefik.enable=true",
-        "traefik.http.routers.auth-proxy.rule=Host(`auth-proxy.cwdc.cbains.ca`)",
+        "traefik.http.routers.auth-proxy.rule=Host(`oauth.cwdc.cbains.ca`)",
         "traefik.http.routers.auth-proxy.tls.certresolver=letsencrypt",
         "traefik.http.routers.auth-proxy.entrypoints=https",
       ]
@@ -20,7 +23,7 @@ job "discord-auth-proxy" {
         path     = "/health"
         type     = "http"
         interval = "2s"
-        timeout  = "2s"
+        timeout  = "1s"
       }
 
     }
@@ -31,9 +34,8 @@ job "discord-auth-proxy" {
         ports = ["http"]
       }
       vault {        
-        policies = ["discord-proxy","default"]
-        change_mode   = "signal"        
-        change_signal = "SIGUSR1"      
+        policies = ["discord-proxy"]
+        change_mode   = "restart"        
       }
       env {
         #Inject details about the environment like what port is being used
@@ -53,6 +55,10 @@ job "discord-auth-proxy" {
         change_mode   = "restart"
         env         = true
         }
+      resources {        
+        cpu    = 40 # MHz
+        memory = 100 # MB      
+      }
     }
   }
 }
