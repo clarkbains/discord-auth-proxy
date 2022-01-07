@@ -111,7 +111,7 @@ app.get('/health', (req,res)=>{
 })
 
 app.get('/boot-time', (req,res)=>{
-	res.send(new Date())
+	res.send("Started at " + new Date())
 })
 app.get('/callback', async (req,res)=>{
     const { code, state } = req.query;
