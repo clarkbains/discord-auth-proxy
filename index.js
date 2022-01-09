@@ -58,9 +58,9 @@ app.get('/verify/:server', async (req,res)=>{
 			let f = false
 			for (let aname of names)	nameSet[aname] = 1
 			for (let aid of ids)	idSet[aid] = 1
-		
+			let matching = []
 			for (let rc of (p?.roles || [])){
-				f |= (nameSet[rc[1]] || idSet[rc[0]])
+				if (nameSet[rc[1]] || idSet[rc[0]]) matching.push(rc)
 			}	
 
 			//console.log("has", nameSet, idSet)
@@ -71,7 +71,12 @@ app.get('/verify/:server', async (req,res)=>{
 				return res.status(403).send("You have permission to view this resource, however the attached cookie was obtained by authenticating with a different site")
 			} else if ((names.length + ids.length) == 0) {
 				return res.status(403).send("Permissions have not been set on this domain")
-			} else if (f) {
+			} else if (matching.length > 0) {
+				let buff = new Buffer(JSON.stringify({
+					id: req.session.id,
+					sid: matching,
+				}) );
+				res.header[`x-${config.PROJECT_NAME}-login-info`] = buff.toString('base64');
 				return res.status(200).end()
 			} else {
 				return res.status(401).send("You do not have permission to view this resource")
