@@ -74,7 +74,9 @@ app.get('/verify/:server', async (req,res)=>{
 			} else if (matching.length > 0) {
 				let buff = new Buffer(JSON.stringify({
 					id: req.session.id,
-					sid: matching,
+					un: req.session.username,
+					dc: req.session.disc,
+					gp: matching,
 				}) );
 				res.header(`X-${config.PROJECT_NAME}-User`, buff.toString('base64'))
 				return res.status(200).end()
