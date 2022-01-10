@@ -76,7 +76,7 @@ app.get('/verify/:server', async (req,res)=>{
 					id: req.session.id,
 					sid: matching,
 				}) );
-				res.header[`x-${config.PROJECT_NAME}-login-info`] = buff.toString('base64');
+				res.header[`xcwdclogin`] = buff.toString('base64');
 				return res.status(200).end()
 			} else {
 				return res.status(401).send("You do not have permission to view this resource")
