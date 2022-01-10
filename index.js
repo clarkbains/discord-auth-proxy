@@ -22,7 +22,7 @@ app.use(cookieSession({secret: config.COOKIE_SIGNER, name:config.PROJECT_NAME+"-
 
 app.use((req,res,next)=>{
 	req.sessionOptions.domain = ""
-	//console.log(req.url)
+	console.log(req.url)
 	next()
 })
 
@@ -76,13 +76,13 @@ app.get('/verify/:server', async (req,res)=>{
 					id: req.session.id,
 					sid: matching,
 				}) );
-				res.header[`x-${config.PROJECT_NAME}-login-info`] = buff.toString('base64');
+				//res.header[`x-${config.PROJECT_NAME}-login-info`] = buff.toString('base64');
 				return res.status(200).end()
 			} else {
 				return res.status(401).send("You do not have permission to view this resource")
 			}
 		}
-
+ 
 		let rid = crypto.randomBytes(20).toString('hex');
 		reqCache.set(rid, {
 			host: req.headers["x-forwarded-host"],
