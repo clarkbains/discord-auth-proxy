@@ -99,7 +99,7 @@ app.get('/verify/:server', async (req,res)=>{
 		req.session.rid = rid
 		req.session.domain = domain
 
-		res.status(302).header({Location: `${API_BASE_URL}/oauth2/authorize?client_id=${config.CLIENT_ID}&redirect_uri=https%3A%2F%2Foauth.cwdc.cbains.ca%2Fcallback&response_type=code&scope=identify&state=${rid}&prompt=none`}).end()
+		res.status(302).header({Location: `${API_BASE_URL}/oauth2/authorize?client_id=${config.CLIENT_ID}&redirect_uri=https%3A%2F%2Foauth.cwdc.carleton.ca%2Fcallback&response_type=code&scope=identify&state=${rid}&prompt=none`}).end()
 	} catch (e) {
 		console.error(e)
 		res.status(500).send("Auth Proxy: Error authenticating your identity")
@@ -131,7 +131,7 @@ app.get('/callback', async (req,res)=>{
 					client_secret: config.CLIENT_SECRET,
 					code,
 					grant_type: 'authorization_code',
-					redirect_uri: `https://oauth.cwdc.cbains.ca/callback`,
+					redirect_uri: `https://oauth.cwdc.carleton.ca/callback`,
 					scope: 'identify',
 				}),
 				headers: {
